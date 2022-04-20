@@ -1,4 +1,7 @@
+using Amenities_App.Services.Repositire;
 using Hotel_App.Data;
+using Hotel_App.Services.Interface;
+using Hotel_App.Services.Repositire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Room_App.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +31,9 @@ namespace Hotel_App
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IHotels, HotelsRepo>();
+            services.AddTransient<IRooms, RoomsRepo>();
+            services.AddTransient<IAmenities, AmenitiesRepo>();
             services.AddDbContext<AsyncInnDbContext>(options =>
             {
                 // Our DATABASE_URL from js days
