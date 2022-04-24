@@ -46,6 +46,13 @@ namespace Hotel_App.Data
             new Amenities { Id = 3, Name = "Amenity 3" }
 
           );
+            modelBuilder.Entity<RoomAmenities>().HasKey(
+                x => new { x.AmenitiesId, x.RoomId });
+
+            modelBuilder.Entity<HotelRoom>().HasKey(
+                x => new { x.HotelId, x.RoomNumber });
+
+
         }
     }
   
