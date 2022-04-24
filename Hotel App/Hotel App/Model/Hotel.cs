@@ -20,6 +20,8 @@ namespace Hotel_App.Model
 
         public int Phone { get; set; }
 
+        public IList<HotelRoom> Rooms { get; set; }
+
 
 
 

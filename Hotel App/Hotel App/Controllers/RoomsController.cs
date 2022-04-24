@@ -78,11 +78,37 @@ namespace Hotel_App.Controllers
 
                
             }
+        [HttpDelete]
+        [Route("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Room>> RemoveAmentityFromRoom(int roomId, int amenityId)
+        {
+            var roomDelete = await _rooms.GetRoom(roomId);
+            if (roomDelete == null)
+            {
+                return NotFound();
+            }
 
-            //private bool RoomExists(int id)
-            //{
-            //    return _context.Room.Any(e => e.Id == id);
-            //}
+            await _rooms.RemoveAmentityFromRoom(roomId, amenityId);
+
+            roomDelete = await _rooms.GetRoom(roomId);
+
+            return roomDelete;
         }
+        [HttpPost]
+        [Route("{roomId}/Amenity/{amenityId}")]
+        public async Task<ActionResult<Room>> AddAmenityToRoom(int roomId, int amenityId)
+        {
+            var roomAdd = await _rooms.AddAmenityToRoom(roomId, amenityId);
+
+            return roomAdd;
+        }
+
+
+
+        //private bool RoomExists(int id)
+        //{
+        //    return _context.Room.Any(e => e.Id == id);
+        //}
     }
+}
 

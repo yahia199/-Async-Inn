@@ -25,3 +25,7 @@ Show the data and manage thier Hotels.
 
  1- we use Interface and repo to build our service.
  2- then we add our logic in controller. 
+
+ ---
+
+ In this lab we add rougt to our app and we made a server for join table.

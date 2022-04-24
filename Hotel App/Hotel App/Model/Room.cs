@@ -13,6 +13,10 @@ namespace Hotel_App.Model
 
         public int Layout { get; set; }
 
+        public IList<RoomAmenities> Amenities { get; set; }
+        public IList<HotelRoom> Rooms { get; set; }
+
+
 
 
     }

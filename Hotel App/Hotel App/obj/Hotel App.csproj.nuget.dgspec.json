@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\D-C\\Desktop\\Hotel app\\Hotel App\\Hotel App\\Hotel App.csproj": {}
+    "C:\\Users\\D-C\\Hotel\\-Async-Inn\\Hotel App\\Hotel App\\Hotel App.csproj": {}
   },
   "projects": {
-    "C:\\Users\\D-C\\Desktop\\Hotel app\\Hotel App\\Hotel App\\Hotel App.csproj": {
+    "C:\\Users\\D-C\\Hotel\\-Async-Inn\\Hotel App\\Hotel App\\Hotel App.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\D-C\\Desktop\\Hotel app\\Hotel App\\Hotel App\\Hotel App.csproj",
+        "projectUniqueName": "C:\\Users\\D-C\\Hotel\\-Async-Inn\\Hotel App\\Hotel App\\Hotel App.csproj",
         "projectName": "Hotel App",
-        "projectPath": "C:\\Users\\D-C\\Desktop\\Hotel app\\Hotel App\\Hotel App\\Hotel App.csproj",
+        "projectPath": "C:\\Users\\D-C\\Hotel\\-Async-Inn\\Hotel App\\Hotel App\\Hotel App.csproj",
         "packagesPath": "C:\\Users\\D-C\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\D-C\\Desktop\\Hotel app\\Hotel App\\Hotel App\\obj\\",
+        "outputPath": "C:\\Users\\D-C\\Hotel\\-Async-Inn\\Hotel App\\Hotel App\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\D-C\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
+              "target": "Package",
+              "version": "[5.0.16, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[5.0.16, )"

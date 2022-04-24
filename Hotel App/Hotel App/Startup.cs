@@ -34,6 +34,9 @@ namespace Hotel_App
             services.AddTransient<IHotels, HotelsRepo>();
             services.AddTransient<IRooms, RoomsRepo>();
             services.AddTransient<IAmenities, AmenitiesRepo>();
+            services.AddControllers()
+                    .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddDbContext<AsyncInnDbContext>(options =>
             {
                 // Our DATABASE_URL from js days
