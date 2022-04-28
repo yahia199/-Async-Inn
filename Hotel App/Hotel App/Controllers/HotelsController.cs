@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hotel_App.Data;
 using Hotel_App.Model;
 using Hotel_App.Services.Interface;
+using Hotel_App.Services.DTOs;
 
 namespace Hotel_App.Controllers
 {
@@ -24,14 +25,14 @@ namespace Hotel_App.Controllers
 
         // GET: api/Hotels
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotel()
+        public async Task<ActionResult<IEnumerable<HotelDTO>>> GetHotel()
         {
             return await _hotels.GetHotels();
         }
 
         // GET: api/Hotels/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hotel>> GetHotel(int id)
+        public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
             var hotel = await _hotels.GetHotel(id);
 
@@ -46,9 +47,9 @@ namespace Hotel_App.Controllers
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
+        public async Task<IActionResult> PutHotel(int id, HotelDTO hotel)
         {
-            if (id != hotel.Id)
+            if (id != hotel.ID)
             {
                 return BadRequest();
             }
@@ -62,7 +63,7 @@ namespace Hotel_App.Controllers
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        public async Task<ActionResult<Hotel>> PostHotel(HotelDTO hotel)
         {
            var AddHotel = _hotels.Create(hotel);
 

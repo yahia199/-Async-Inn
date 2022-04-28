@@ -1,4 +1,5 @@
 ﻿using Hotel_App.Model;
+using Hotel_App.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,13 @@ namespace HotelRoom_App.Services.Interface
 {
   public interface IHotelRoom
     {
-        public Task<HotelRoom> CreateHotelRoom(int id,HotelRoom hotelRoom);
+        public Task<HotelRoomDTO> CreateHotelRoom( HotelRoomDTO hotelRoom);
 
-        public Task<List<HotelRoom>> GetHotelRooms(int id);
+        public Task<List<HotelRoomDTO>> GetHotelRooms();
 
-        public Task<HotelRoom> GetHotelRoom(int id, int RoomNumber);
+        public Task<HotelRoomDTO> GetHotelRoom(int id, int RoomNumber);
 
-        public Task<HotelRoom> UpdateHotelRoom( HotelRoom hotelRoom);
+        public Task<HotelRoomDTO> UpdateHotelRoom(HotelRoomDTO hotelRoom);
 
         public Task DeleteHotelRoom(int RoomNumber,int id);
     }

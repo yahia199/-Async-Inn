@@ -1,5 +1,6 @@
 ﻿using Hotel_App.Data;
 using Hotel_App.Model;
+using Hotel_App.Services.DTOs;
 using Hotel_App.Services.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,35 +19,46 @@ namespace Amenities_App.Services.Repositire
         {
             _context = context;
         }
-        public async Task<Amenities> Create(Amenities amenities)
+        public async Task<AmenityDTO> Create(AmenityDTO amenities)
         {
-            _context.Entry(amenities).State = EntityState.Added;
+            Amenities amenities1 = new Amenities
+            {
+                Id = amenities.ID,
+                Name = amenities.Name
+
+            };
+            _context.Entry(amenities1).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return amenities;
         }
 
         public async Task Delete(int id)
         {
-            Amenities amenities = await GetAmenities(id);
+            AmenityDTO amenities = await GetAmenities(id);
             _context.Entry(amenities).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Amenities> GetAmenities(int id)
+        public async Task<AmenityDTO> GetAmenities(int id)
         {
-            Amenities amenities = await _context.Amenities.FindAsync(id);
-            return amenities;
+            return await _context.Amenities.Select(amenities => new AmenityDTO { ID = amenities.Id, Name = amenities.Name }).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Amenities>> GetAmenitiess()
+        public async Task<List<AmenityDTO>> GetAmenitiess()
         {
-            var amenities = await _context.Amenities.ToListAsync();
-            return amenities;
+            return await _context.Amenities.Select(amenities => new AmenityDTO { ID = amenities.Id, Name = amenities.Name }).ToListAsync();
+
         }
 
-        public async Task<Amenities> UpdateAmenities(int id, Amenities amenities)
+        public async Task<AmenityDTO> UpdateAmenities(int id, AmenityDTO amenities)
         {
-            _context.Entry(amenities).State = EntityState.Modified;
+            Amenities amenities1 = new Amenities
+            {
+                Id = amenities.ID,
+                Name = amenities.Name
+
+            };
+            _context.Entry(amenities1).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return amenities;
         }

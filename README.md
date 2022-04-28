@@ -29,3 +29,7 @@ Show the data and manage thier Hotels.
  ---
 
  In this lab we add rougt to our app and we made a server for join table.
+
+ ---
+
+ in lab 16 we add DTOs for our app and you can use it by clone a repo then run a program and do run then take a rought put it in the url search then you will see the results. 

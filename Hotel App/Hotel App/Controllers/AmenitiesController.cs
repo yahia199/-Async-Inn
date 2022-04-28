@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hotel_App.Data;
 using Hotel_App.Model;
 using Hotel_App.Services.Interface;
+using Hotel_App.Services.DTOs;
 
 namespace Hotel_App.Controllers
 {
@@ -24,14 +25,14 @@ namespace Hotel_App.Controllers
 
         // GET: api/Amenities
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Amenities>>> GetAmenities()
+        public async Task<ActionResult<IEnumerable<AmenityDTO>>> GetAmenities()
         {
-            return await _amenities.GetAmenitiess();
+            return Ok( await _amenities.GetAmenitiess());
         }
 
         // GET: api/Amenities/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Amenities>> GetAmenities(int id)
+        public async Task<ActionResult<AmenityDTO>> GetAmenities(int id)
         {
             var amenities = await _amenities.GetAmenities(id);
 
@@ -40,15 +41,15 @@ namespace Hotel_App.Controllers
                 return NotFound();
             }
 
-            return amenities;
+            return Ok( amenities);
         }
 
         // PUT: api/Amenities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAmenities(int id, Amenities amenities)
+        public async Task<IActionResult> PutAmenities(int id, AmenityDTO amenities)
         {
-            if (id != amenities.Id)
+            if (id != amenities.ID)
             {
                 return BadRequest();
             }
@@ -61,7 +62,7 @@ namespace Hotel_App.Controllers
         // POST: api/Amenities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Amenities>> PostAmenities(Amenities amenities)
+        public async Task<ActionResult<AmenityDTO>> PostAmenities(AmenityDTO amenities)
         {
             var AddAmenities = _amenities.Create(amenities);
 
