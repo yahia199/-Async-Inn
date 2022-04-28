@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Hotel_App.Services.DTOs;
 
 namespace Hotel_App.Services.Repositire
 {
@@ -19,35 +20,108 @@ namespace Hotel_App.Services.Repositire
             _context = context;
         }
 
-        public async Task<Hotel> Create(Hotel hotel)
+        public async Task<HotelDTO> Create(HotelDTO hotel)
         {
-            _context.Entry(hotel).State = EntityState.Added;
+            Hotel hotel1 = new Hotel
+            {
+                Id = hotel.ID,
+                Name = hotel.Name,
+                StreetAdress = hotel.StreetAddress,
+                City = hotel.City,
+                State = hotel.State,
+                Phone = hotel.Phone
+            };
+
+
+            _context.Entry(hotel1).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return hotel;
         }
 
         public async Task Delete(int id)
         {
-            Hotel hotel = await GetHotel(id);
+            HotelDTO hotel = await GetHotel(id);
             _context.Entry(hotel).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Hotel> GetHotel(int id)
+        public async Task<HotelDTO> GetHotel(int id)
         {
-            Hotel hotel = await _context.Hotel.FindAsync(id);
-            return hotel;
+            return await _context.Hotel.Select(x => new HotelDTO
+            {
+                ID = x.Id,
+                Name = x.Name,
+                StreetAddress = x.StreetAdress,
+                City = x.City,
+                State = x.State,
+                Phone = x.Phone,
+                Rooms = x.Rooms.Select(x => new HotelRoomDTO
+                {
+                    HotelID = x.HotelId,
+                    RoomNumber = x.RoomNumber,
+                    Rate = x.Rate,
+                    PetFriendly = x.PetFrindly,
+                    RoomID = x.RoomId,
+                    Room = x.Room.Rooms.Select(x => new RoomDTO
+                    {
+                        ID = x.Room.Id,
+                        Name = x.Room.Name,
+                        Layout = x.Room.Layout,
+                        Amenities = x.Room.Amenities.Select(x => new AmenityDTO
+                        {
+                            ID = x.Amenities.Id,
+                            Name = x.Amenities.Name
+                        }).ToList()
+                    }).FirstOrDefault()
+                }).ToList()
+            }).FirstOrDefaultAsync(x => x.ID == id);
+
         }
 
-        public async Task<List<Hotel>> GetHotels()
+        public async Task<List<HotelDTO>> GetHotels()
         {
-            var hotels = await _context.Hotel.ToListAsync();
-            return hotels;
+            return await _context.Hotel.Select(x => new HotelDTO
+            {
+                ID = x.Id,
+                Name = x.Name,
+                StreetAddress = x.StreetAdress,
+                City = x.City,
+                State = x.State,
+                Phone = x.Phone,
+                Rooms = x.Rooms.Select(x => new HotelRoomDTO
+                {
+                    HotelID = x.HotelId,
+                    RoomNumber = x.RoomNumber,
+                    Rate = x.Rate,
+                    PetFriendly = x.PetFrindly,
+                    RoomID = x.RoomId,
+                    Room = x.Room.Rooms.Select(x => new RoomDTO
+                    {
+                        ID = x.Room.Id,
+                        Name = x.Room.Name,
+                        Layout = x.Room.Layout,
+                        Amenities = x.Room.Amenities.Select(x => new AmenityDTO
+                        {
+                            ID = x.Amenities.Id,
+                            Name = x.Amenities.Name
+                        }).ToList()
+                    }).FirstOrDefault()
+                }).ToList()
+            }).ToListAsync();
         }
 
-        public async Task<Hotel> UpdateHotel(int id , Hotel hotel)
+        public async Task<HotelDTO> UpdateHotel(int id , HotelDTO hotel)
         {
-            _context.Entry(hotel).State = EntityState.Modified;
+            Hotel hotel1 = new Hotel
+            {
+                Id = hotel.ID,
+                Name = hotel.Name,
+                StreetAdress = hotel.StreetAddress,
+                City = hotel.City,
+                State = hotel.State,
+                Phone = hotel.Phone
+            };
+            _context.Entry(hotel1).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return hotel;
         }

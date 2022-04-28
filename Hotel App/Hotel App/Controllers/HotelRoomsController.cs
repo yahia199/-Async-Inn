@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Hotel_App.Data;
 using Hotel_App.Model;
 using HotelRoom_App.Services.Interface;
+using Hotel_App.Services.DTOs;
 
 namespace Hotel_App.Controllers
 {
@@ -25,16 +26,16 @@ namespace Hotel_App.Controllers
         // GET: api/HotelRooms
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms")]
-        public async Task<ActionResult<IEnumerable<HotelRoom>>> GetHotelRoom(int hotelId)
+        public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRoom()
         {
-            return await _hotels.GetHotelRooms(hotelId);
+            return await _hotels.GetHotelRooms();
         }
 
 
         // GET: api/HotelRooms/5
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        public async Task<ActionResult<HotelRoom>> GetHotelRoom(int hotelId, int roomNumber)
+        public async Task<ActionResult<HotelRoomDTO>> GetHotelRoom(int hotelId, int roomNumber)
         {
             var hotelRoom = await _hotels.GetHotelRoom(hotelId, roomNumber);
 
@@ -51,9 +52,9 @@ namespace Hotel_App.Controllers
             // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
             [HttpPut]
             [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        public async Task<IActionResult> PutHotelRoom(int id, HotelRoom hotelRoom)
+        public async Task<IActionResult> PutHotelRoom(int id, HotelRoomDTO hotelRoom)
         {
-            if (id != hotelRoom.HotelId)
+            if (id != hotelRoom.HotelID)
             {
                 return BadRequest();
             }
@@ -66,9 +67,9 @@ namespace Hotel_App.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route("/api/Hotels/{hotelId}/Rooms")]
-        public async Task<ActionResult<HotelRoom>> PostHotelRoom(int id, HotelRoom hotelRoom)
+        public async Task<ActionResult<HotelRoomDTO>> PostHotelRoom( HotelRoomDTO hotelRoom)
         {
-            var RoomHotel = await _hotels.CreateHotelRoom(id, hotelRoom);
+            var RoomHotel = await _hotels.CreateHotelRoom( hotelRoom);
 
             return Ok(RoomHotel);
 
@@ -87,7 +88,7 @@ namespace Hotel_App.Controllers
 
             await _hotels.DeleteHotelRoom(id, roomNumber);
 
-            return RoomHotel;
+            return NoContent();
         }
 
 
