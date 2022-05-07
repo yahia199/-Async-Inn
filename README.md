@@ -32,4 +32,10 @@ Show the data and manage thier Hotels.
 
  ---
 
- in lab 16 we add DTOs for our app and you can use it by clone a repo then run a program and do run then take a rought put it in the url search then you will see the results. 
+ in lab 16 we add DTOs for our app and you can use it by clone a repo then run a program and do run then take a rought put it in the url search then you will see the results.
+
+ ---
+
+ lab 18 we use Identity  
+ ![reg](./reg.png)
+ ![reg2](./reg2.png)
