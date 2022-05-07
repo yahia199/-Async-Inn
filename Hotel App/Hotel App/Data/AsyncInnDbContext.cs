@@ -1,4 +1,5 @@
 ﻿using Hotel_App.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace Hotel_App.Data
 {
-    public class AsyncInnDbContext : DbContext
+    public class AsyncInnDbContext : IdentityDbContext<ApplicationUser>
+
     {
         public AsyncInnDbContext(DbContextOptions options) : base(options)
         {
@@ -26,7 +28,7 @@ namespace Hotel_App.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // This calls the base method, but does nothing
-            // base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Hotel>().HasData(
               new Hotel { Id = 1, Name = "Hotel 1",City = "Amman" , Country = "Jordan",Phone = 077,State = "Amman",StreetAdress = "University str."},
