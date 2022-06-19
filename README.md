@@ -39,3 +39,17 @@ Show the data and manage thier Hotels.
  lab 18 we use Identity  
  ![reg](./reg.png)
  ![reg2](./reg2.png)
+
+ ---
+
+ lab 19 we use role
+ 1. District Manager
+District manager can do full CRUD operations on all Hotel, HotelRoom, Room, and Amenity entities.
+2. The district manager can create accounts for all other roles
+Property Manager
+Property Manager’s can add/update/read new HotelRooms to hotels, and amenities to rooms. A property manager cannot create new room entities or hotel entities.
+The property manager can only create accounts for Agents
+3. Agent
+An agent can only update/read a HotelRoom and add/delete amenities to rooms
+4. Anonymous users
+anonymous users can only view all GET routes

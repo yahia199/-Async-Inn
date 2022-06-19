@@ -1,4 +1,6 @@
 ﻿using Hotel_App.Model;
+using Hotel_App.Services.DTOs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -24,6 +26,8 @@ namespace Hotel_App.Data
         public DbSet<Room> Room { get; set; }
 
         public DbSet<RoomAmenities> RoomAmenities { get; set; }
+
+        public DbSet<UserDto> userDtos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,8 +57,49 @@ namespace Hotel_App.Data
 
             modelBuilder.Entity<HotelRoom>().HasKey(
                 x => new { x.HotelId, x.RoomNumber });
+            SeedRole(modelBuilder, "District Manager", "Create Hotel", "See Hotels", "Update Hotel", "Delete Hotel",
+                                      "Create HotelRoom", "See HotelRooms", "Update HotelRooms", "Delete HotelRooms",
+                                      "Create Rooms", "See Rooms", "Update Rooms", "Delete Rooms", "Create Amenity",
+                                      "See Amenities", "Add Amenity to Room", "Delete Amenity From Room", "Update Amenity", "Delete Amenity",
+                                      "Create Account for District Manager", "Create Account for Agent", "Create Account for Property Manager", "Create account for Anonymous User",
+                                      "Add Room to Hotel");
+            SeedRole(modelBuilder, "PropertyManager", "See Hotels", "Create HotelRoom", "See HotelRooms", "Update HotelRooms",
+                                   "See Rooms", "See Amenities", "Add Amenity to Room", "Delete Amenity From Room", "Update Amenity",
+                                   "Add Room to Hotel");
+            SeedRole(modelBuilder, "Agent", "See HotelRooms", "Update HotelRooms", "See Amenities",
+                                   "Add Amenity to Room", "Delete Amenity From Room");
+            SeedRole(modelBuilder, "Anonymous", "See Hotels", "See HotelRooms", "See Rooms", "See Amenities");
 
 
+          
+          
+
+        }
+
+        private int nextId = 1; // we need this to generate a unique id on our own
+        private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        {
+            var role = new IdentityRole
+            {
+                Id = roleName.ToLower(),
+                Name = roleName,
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.Empty.ToString()
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            // Go through the permissions list (the params) and seed a new entry for each
+            var roleClaims = permissions.Select(permission =>
+            new IdentityRoleClaim<string>
+            {
+                Id = nextId++,
+                RoleId = role.Id,
+                ClaimType = "permissions", // This matches what we did in Startup.cs
+      ClaimValue = permission
+            }).ToArray();
+
+            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
         }
     }
   

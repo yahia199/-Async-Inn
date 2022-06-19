@@ -271,3 +271,4 @@ C:\Users\D-C\Hotel\-Async-Inn\Hotel App\Hotel App\bin\Debug\net5.0\Swashbuckle.A
 C:\Users\D-C\Hotel\-Async-Inn\Hotel App\Hotel App\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\D-C\Hotel\-Async-Inn\Hotel App\Hotel App\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\D-C\Hotel\-Async-Inn\Hotel App\Hotel App\obj\Debug\net5.0\Hotel App.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\D-C\Hotel\-Async-Inn\Hotel App\Hotel App\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Hotel_App.Services.Repositire
@@ -14,9 +15,12 @@ namespace Hotel_App.Services.Repositire
     {
         private UserManager<ApplicationUser> userManager;
 
-        public IdentityUserService(UserManager<ApplicationUser> manager)
+        private JwtTokenService tokenService;
+
+        public IdentityUserService(UserManager<ApplicationUser> manager, JwtTokenService jwtTokenService)
         {
             userManager = manager;
+            tokenService = jwtTokenService;
         }
 
         public async Task<UserDto> Authenticate(LoginDataDto data)
@@ -25,10 +29,13 @@ namespace Hotel_App.Services.Repositire
 
             if (await userManager.CheckPasswordAsync(user, data.Password))
             {
+
                 return new UserDto
                 {
                     Id = user.Id,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(50)),
+                    Roles = await userManager.GetRolesAsync(user)
 
                 };
             }
@@ -49,10 +56,13 @@ namespace Hotel_App.Services.Repositire
 
             if (result.Succeeded)
             {
+                await userManager.AddToRolesAsync(user, data.Roles);
                 return new UserDto
                 {
                     Id = user.Id,
-                    Username = user.UserName
+                    Username = user.UserName,
+                    Token = await tokenService.GetToken(user, System.TimeSpan.FromMinutes(50)),
+                    Roles = await userManager.GetRolesAsync(user)
 
                 };
                 
@@ -67,6 +77,16 @@ namespace Hotel_App.Services.Repositire
                 modelState.AddModelError(errorKey, error.Description);
             }
             return null;
+        } 
+        // Use a "claim" to get a user
+        public async Task<UserDto> GetUser(ClaimsPrincipal principal)
+        {
+            var user = await userManager.GetUserAsync(principal);
+            return new UserDto
+            {
+                Id = user.Id,
+                Username = user.UserName
+            };
         }
     }
 }

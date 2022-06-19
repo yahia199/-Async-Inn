@@ -9,6 +9,7 @@ using Hotel_App.Data;
 using Hotel_App.Model;
 using Hotel_App.Services.Interface;
 using Hotel_App.Services.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_App.Controllers
 {
@@ -25,6 +26,7 @@ namespace Hotel_App.Controllers
 
         // GET: api/Hotels
         [HttpGet]
+        [Authorize(Policy = "See Hotels")]
         public async Task<ActionResult<IEnumerable<HotelDTO>>> GetHotel()
         {
             return await _hotels.GetHotels();
@@ -32,6 +34,8 @@ namespace Hotel_App.Controllers
 
         // GET: api/Hotels/5
         [HttpGet("{id}")]
+        [Authorize(Policy = "See Hotels")]
+
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
             var hotel = await _hotels.GetHotel(id);

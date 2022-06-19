@@ -3,6 +3,7 @@ using Hotel_App.Data;
 using Hotel_App.Model;
 using Hotel_App.Services.Interface;
 using Hotel_App.Services.Repositire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -45,6 +46,7 @@ namespace Hotel_App
             services.AddTransient<IHotels, HotelsRepo>();
             services.AddTransient<IRooms, RoomsRepo>();
             services.AddTransient<IAmenities, AmenitiesRepo>();
+            services.AddScoped<JwtTokenService>();
             services.AddControllers()
                     .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -54,6 +56,42 @@ namespace Hotel_App
                 string connectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
+
+            // Add the wiring for adding "Authentication" for our API
+            // "We want the system to always use these "Schemes" to authenticate us
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+              .AddJwtBearer(options =>
+              {
+       // Tell the authenticaion scheme "how/where" to validate the token + secret
+       options.TokenValidationParameters = JwtTokenService.GetValidationParameters(Configuration);
+              }); services.AddAuthorization(options =>
+              {
+                  // Add "Name of Policy", and the Lambda returns a definition
+                  options.AddPolicy("Create Hotel", policy => policy.RequireClaim("permissions", "Create Hotel"));
+                  options.AddPolicy("See Hotels", policy => policy.RequireClaim("permissions", "See Hotels"));
+                  options.AddPolicy("Update Hotel", policy => policy.RequireClaim("permissions", "Update Hotel"));
+                  options.AddPolicy("Delete Hotel", policy => policy.RequireClaim("permissions", "Delete Hotel"));
+                  options.AddPolicy("Create HotelRoom", policy => policy.RequireClaim("permissions", "Create HotelRooms"));
+                  options.AddPolicy("See HotelRooms", policy => policy.RequireClaim("permissions", "See HotelRooms"));
+                  options.AddPolicy("Update HotelRooms", policy => policy.RequireClaim("permissions", "Update HotelRooms"));
+                  options.AddPolicy("Delete HotelRooms", policy => policy.RequireClaim("permissions", "Delete HotelRooms"));
+                  options.AddPolicy("Create Rooms", policy => policy.RequireClaim("permissions", "Create Rooms"));
+                  options.AddPolicy("See Rooms", policy => policy.RequireClaim("permissions", "See Rooms"));
+                  options.AddPolicy("Update Rooms", policy => policy.RequireClaim("permissions", "Update Rooms"));
+                  options.AddPolicy("Delete Rooms", policy => policy.RequireClaim("permissions", "Delete Rooms"));
+                  options.AddPolicy("Create Amenity", policy => policy.RequireClaim("permissions", "Create Amenity"));
+                  options.AddPolicy("See Amenities", policy => policy.RequireClaim("permissions", "See Amenities"));
+                  options.AddPolicy("Add Amenity to Room", policy => policy.RequireClaim("permissions", "Add Amenity to Room"));
+                  options.AddPolicy("Delete Amenity From Room", policy => policy.RequireClaim("permissions", "Delete Amenity From Room"));
+                  options.AddPolicy("Update Amenity", policy => policy.RequireClaim("permissions", "Update Amenity"));
+                  options.AddPolicy("Delete Amenity", policy => policy.RequireClaim("permissions", "Delete Amenity"));
+              });
+
             services.AddMvc();
             services.AddSwaggerGen(options =>
             {
@@ -62,7 +100,28 @@ namespace Hotel_App
                 {
                     Title = "Hotel Demo",
                     Version = "v1",
+                }); options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
                 });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                              Type = ReferenceType.SecurityScheme,
+                              Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                }
+               });
             });
         }
 
@@ -82,9 +141,12 @@ namespace Hotel_App
                options.RoutePrefix = "";
             });
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
 
-                app.UseEndpoints(endpoints =>
+
+            app.UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
                     endpoints.MapGet("/", async context =>
