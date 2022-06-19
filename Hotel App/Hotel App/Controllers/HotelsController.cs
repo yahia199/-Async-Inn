@@ -27,6 +27,9 @@ namespace Hotel_App.Controllers
         // GET: api/Hotels
         [HttpGet]
         [Authorize(Policy = "See Hotels")]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "Anonymous")]
+
         public async Task<ActionResult<IEnumerable<HotelDTO>>> GetHotel()
         {
             return await _hotels.GetHotels();
@@ -35,6 +38,8 @@ namespace Hotel_App.Controllers
         // GET: api/Hotels/5
         [HttpGet("{id}")]
         [Authorize(Policy = "See Hotels")]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "Anonymous")]
 
         public async Task<ActionResult<HotelDTO>> GetHotel(int id)
         {
@@ -51,6 +56,8 @@ namespace Hotel_App.Controllers
         // PUT: api/Hotels/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "District Manager")]
+
         public async Task<IActionResult> PutHotel(int id, HotelDTO hotel)
         {
             if (id != hotel.ID)
@@ -67,6 +74,8 @@ namespace Hotel_App.Controllers
         // POST: api/Hotels
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "District Manager")]
+
         public async Task<ActionResult<Hotel>> PostHotel(HotelDTO hotel)
         {
            var AddHotel = _hotels.Create(hotel);
@@ -76,6 +85,8 @@ namespace Hotel_App.Controllers
 
         // DELETE: api/Hotels/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "District Manager")]
+
         public async Task<IActionResult> DeleteHotel(int id)
         {
             await _hotels.Delete(id);

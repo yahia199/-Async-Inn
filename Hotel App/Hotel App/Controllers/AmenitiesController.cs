@@ -9,6 +9,7 @@ using Hotel_App.Data;
 using Hotel_App.Model;
 using Hotel_App.Services.Interface;
 using Hotel_App.Services.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_App.Controllers
 {
@@ -25,6 +26,9 @@ namespace Hotel_App.Controllers
 
         // GET: api/Amenities
         [HttpGet]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "PropertyManager")]
+        [Authorize(Roles = "Anonymous")]
         public async Task<ActionResult<IEnumerable<AmenityDTO>>> GetAmenities()
         {
             return Ok( await _amenities.GetAmenitiess());
@@ -32,6 +36,11 @@ namespace Hotel_App.Controllers
 
         // GET: api/Amenities/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "PropertyManager")]
+        [Authorize(Roles = "Anonymous")]
+
+
         public async Task<ActionResult<AmenityDTO>> GetAmenities(int id)
         {
             var amenities = await _amenities.GetAmenities(id);
@@ -47,6 +56,10 @@ namespace Hotel_App.Controllers
         // PUT: api/Amenities/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "PropertyManager")]
+
+
         public async Task<IActionResult> PutAmenities(int id, AmenityDTO amenities)
         {
             if (id != amenities.ID)
@@ -62,6 +75,12 @@ namespace Hotel_App.Controllers
         // POST: api/Amenities
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "PropertyManager")]
+        [Authorize(Roles = "Agent")]
+
+
+
         public async Task<ActionResult<AmenityDTO>> PostAmenities(AmenityDTO amenities)
         {
             var AddAmenities = _amenities.Create(amenities);
@@ -71,6 +90,10 @@ namespace Hotel_App.Controllers
 
         // DELETE: api/Amenities/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "Agent")]
+
+
         public async Task<IActionResult> DeleteAmenities(int id)
         {
             await _amenities.Delete(id);

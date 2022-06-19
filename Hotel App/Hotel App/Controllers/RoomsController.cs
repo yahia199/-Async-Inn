@@ -9,6 +9,7 @@ using Hotel_App.Data;
 using Hotel_App.Model;
 using Room_App.Services.Interface;
 using Hotel_App.Services.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_App.Controllers
 {
@@ -25,6 +26,8 @@ namespace Hotel_App.Controllers
 
         // GET: api/Rooms
         [HttpGet]
+        [Authorize(Roles = "District Manager")]
+        [Authorize(Roles = "Anonymous")]
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRoom()
         {
             return await _rooms.GetRooms();
@@ -32,6 +35,8 @@ namespace Hotel_App.Controllers
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Anonymous")]
+
         public async Task<ActionResult<RoomDTO>> GetRoom(int id)
         {
             var room = await _rooms.GetRoom(id);
@@ -47,6 +52,8 @@ namespace Hotel_App.Controllers
         // PUT: api/Rooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "District Manager")]
+
         public async Task<IActionResult> PutRoom(int id, RoomDTO room)
         {
             if (id != room.ID)
@@ -62,7 +69,9 @@ namespace Hotel_App.Controllers
             // POST: api/Rooms
             // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
             [HttpPost]
-            public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
+        [Authorize(Roles = "District Manager")]
+
+        public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
             {
                 var AddRoom = await _rooms.Create(room);
 
@@ -71,7 +80,9 @@ namespace Hotel_App.Controllers
 
             // DELETE: api/Rooms/5
             [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteRoom(int id)
+        [Authorize(Roles = "District Manager")]
+
+        public async Task<IActionResult> DeleteRoom(int id)
             {
                 await _rooms.Delete(id);
 
@@ -81,6 +92,8 @@ namespace Hotel_App.Controllers
             }
         [HttpDelete]
         [Route("{roomId}/Amenity/{amenityId}")]
+        [Authorize(Roles = "District Manager")]
+
         public async Task<IActionResult> RemoveAmentityFromRoom(int roomId, int amenityId)
         {
             await _rooms.RemoveAmentityFromRoom(roomId, amenityId);
@@ -89,6 +102,7 @@ namespace Hotel_App.Controllers
         }
         [HttpPost]
         [Route("{roomId}/Amenity/{amenityId}")]
+        [Authorize(Roles = "District Manager")]
         public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
         {
              await _rooms.AddAmenityToRoom(roomId, amenityId);
