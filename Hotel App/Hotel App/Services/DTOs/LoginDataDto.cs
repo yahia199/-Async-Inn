@@ -13,5 +13,6 @@ namespace Hotel_App.Services.DTOs
 
         [Required]
         public string Password { get; set; }
+
     }
 }

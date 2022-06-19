@@ -9,6 +9,7 @@ using Hotel_App.Data;
 using Hotel_App.Model;
 using HotelRoom_App.Services.Interface;
 using Hotel_App.Services.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel_App.Controllers
 {
@@ -26,6 +27,7 @@ namespace Hotel_App.Controllers
         // GET: api/HotelRooms
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms")]
+        [Authorize(Roles = "administrator")]
         public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRoom()
         {
             return await _hotels.GetHotelRooms();
