@@ -27,10 +27,7 @@ namespace Hotel_App.Controllers
         // GET: api/HotelRooms
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms")]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "PropertyManager")]
-        [Authorize(Roles = "Agent")]
-        [Authorize(Roles = "Anonymous")]
+       [AllowAnonymous]
 
         public async Task<ActionResult<IEnumerable<HotelRoomDTO>>> GetHotelRoom()
         {
@@ -41,10 +38,7 @@ namespace Hotel_App.Controllers
         // GET: api/HotelRooms/5
         [HttpGet]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "PropertyManager")]
-        [Authorize(Roles = "Agent")]
-        [Authorize(Roles = "Anonymous")]
+     [AllowAnonymous]
         public async Task<ActionResult<HotelRoomDTO>> GetHotelRoom(int hotelId, int roomNumber)
         {
             var hotelRoom = await _hotels.GetHotelRoom(hotelId, roomNumber);
@@ -62,9 +56,7 @@ namespace Hotel_App.Controllers
             // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
             [HttpPut]
             [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "PropertyManager")]
-        [Authorize(Roles = "Agent")]
+        [Authorize(Policy  = "Update HotelRooms")]
 
 
 
@@ -83,10 +75,7 @@ namespace Hotel_App.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Route("/api/Hotels/{hotelId}/Rooms")]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "PropertyManager")]
-
-
+        [Authorize(Policy = "Create HotelRoom")]
         public async Task<ActionResult<HotelRoomDTO>> PostHotelRoom( HotelRoomDTO hotelRoom)
         {
             var RoomHotel = await _hotels.CreateHotelRoom( hotelRoom);
@@ -98,7 +87,7 @@ namespace Hotel_App.Controllers
         // DELETE: api/HotelRooms/5
         [HttpDelete]
         [Route("/api/Hotels/{hotelId}/Rooms/{roomNumber}")]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Delete HotelRooms")]
 
 
         public async Task<ActionResult<HotelRoom>> DeleteHotelRoom(int id, int roomNumber)

@@ -26,8 +26,7 @@ namespace Hotel_App.Controllers
 
         // GET: api/Rooms
         [HttpGet]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "Anonymous")]
+  [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<RoomDTO>>> GetRoom()
         {
             return await _rooms.GetRooms();
@@ -35,8 +34,7 @@ namespace Hotel_App.Controllers
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
-        [Authorize(Roles = "Anonymous")]
-
+[AllowAnonymous]
         public async Task<ActionResult<RoomDTO>> GetRoom(int id)
         {
             var room = await _rooms.GetRoom(id);
@@ -52,7 +50,7 @@ namespace Hotel_App.Controllers
         // PUT: api/Rooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Update Rooms")]
 
         public async Task<IActionResult> PutRoom(int id, RoomDTO room)
         {
@@ -69,7 +67,7 @@ namespace Hotel_App.Controllers
             // POST: api/Rooms
             // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
             [HttpPost]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Create Rooms")]
 
         public async Task<ActionResult<RoomDTO>> PostRoom(RoomDTO room)
             {
@@ -80,7 +78,7 @@ namespace Hotel_App.Controllers
 
             // DELETE: api/Rooms/5
             [HttpDelete("{id}")]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Delete Rooms")]
 
         public async Task<IActionResult> DeleteRoom(int id)
             {
@@ -92,7 +90,7 @@ namespace Hotel_App.Controllers
             }
         [HttpDelete]
         [Route("{roomId}/Amenity/{amenityId}")]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Delete Amenity From Room")]
 
         public async Task<IActionResult> RemoveAmentityFromRoom(int roomId, int amenityId)
         {
@@ -102,7 +100,7 @@ namespace Hotel_App.Controllers
         }
         [HttpPost]
         [Route("{roomId}/Amenity/{amenityId}")]
-        [Authorize(Roles = "District Manager")]
+        [Authorize(Policy = "Add Amenity to Room")]
         public async Task<IActionResult> AddAmenityToRoom(int roomId, int amenityId)
         {
              await _rooms.AddAmenityToRoom(roomId, amenityId);

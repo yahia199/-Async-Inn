@@ -22,7 +22,7 @@ namespace Hotel_App.Services.Repositire
 
         public async Task<HotelDTO> Create(HotelDTO hotel)
         {
-            Hotel hotel1 = new Hotel
+            Hotel newHotel = new Hotel
             {
                 Id = hotel.ID,
                 Name = hotel.Name,
@@ -33,14 +33,17 @@ namespace Hotel_App.Services.Repositire
             };
 
 
-            _context.Entry(hotel1).State = EntityState.Added;
+            _context.Entry(newHotel).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return hotel;
+
+            HotelDTO NewhotelDTO = await GetHotel(newHotel.Id);
+            return NewhotelDTO;
+
         }
 
         public async Task Delete(int id)
         {
-            HotelDTO hotel = await GetHotel(id);
+            Hotel hotel = await _context.Hotel.FindAsync(id);
             _context.Entry(hotel).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
