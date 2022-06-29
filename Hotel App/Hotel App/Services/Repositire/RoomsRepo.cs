@@ -50,7 +50,7 @@ namespace Hotel_App.Services.Repositire
 
         public async Task Delete(int id)
         {
-            RoomDTO room = await GetRoom(id);
+            Room room = await _context.Room.FindAsync(id);
             _context.Entry(room).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }

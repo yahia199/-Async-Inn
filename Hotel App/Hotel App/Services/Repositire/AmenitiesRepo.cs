@@ -34,7 +34,7 @@ namespace Amenities_App.Services.Repositire
 
         public async Task Delete(int id)
         {
-            AmenityDTO amenities = await GetAmenities(id);
+            Amenities amenities = await _context.Amenities.FindAsync(id);
             _context.Entry(amenities).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }

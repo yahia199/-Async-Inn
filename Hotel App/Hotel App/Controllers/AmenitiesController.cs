@@ -78,9 +78,6 @@ namespace Hotel_App.Controllers
         [Authorize(Roles = "District Manager")]
         [Authorize(Roles = "PropertyManager")]
         [Authorize(Roles = "Agent")]
-
-
-
         public async Task<ActionResult<AmenityDTO>> PostAmenities(AmenityDTO amenities)
         {
             var AddAmenities = _amenities.Create(amenities);
@@ -90,10 +87,7 @@ namespace Hotel_App.Controllers
 
         // DELETE: api/Amenities/5
         [HttpDelete("{id}")]
-        [Authorize(Roles = "District Manager")]
-        [Authorize(Roles = "Agent")]
-
-
+        [Authorize(Policy = "Delete Amenity")]
         public async Task<IActionResult> DeleteAmenities(int id)
         {
             await _amenities.Delete(id);
